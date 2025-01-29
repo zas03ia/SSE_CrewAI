@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+*.env
+*.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django-related
+db.sqlite3
+*.sqlite3
+/media/
+staticfiles/
+static/
+local_settings.py
+.env
+
+# CrewAI-related
+*.log
+crewai_sessions/
+
+# PyCharm
+.idea/
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+
+# Node.js (if using for frontend)
+node_modules/
+npm-debug.log
+
+# Docker
+docker-compose.override.yml
+*.dockerfile
+
+# Other
+*.swp
+*.swo
+*.swn

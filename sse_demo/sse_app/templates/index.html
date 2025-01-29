@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Demo</title>
+</head>
+<body>
+    <h1>Server-Sent Events Demo</h1>
+    <div id="sse-events">
+        <!-- Events will be displayed here -->
+    </div>
+
+    <script>
+        // Create a new EventSource to listen for SSE messages from the server
+        const eventSource = new EventSource('/sse/');
+        
+        // When a new message is received, update the DOM
+        eventSource.onmessage = function(event) {
+            const messageDiv = document.getElementById('sse-events');
+            messageDiv.innerHTML += `<p>${event.data}</p>`;
+        };
+
+        // Optionally handle errors (e.g., connection lost)
+        eventSource.onerror = function(event) {
+            console.error("Error with SSE connection", event);
+        };
+    </script>
+</body>
+</html>
