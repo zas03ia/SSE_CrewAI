@@ -1,2 +1,4 @@
 django
 daphne
+crewai
+python-dotenv
