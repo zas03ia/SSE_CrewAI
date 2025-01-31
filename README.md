@@ -57,6 +57,7 @@ ASGI_APPLICATION = "sse_demo.asgi.application"
 ## 🔄 Streaming Server-Sent Events (SSE)
 ### **SSE View (`views.py`)**
 ```python
+# Implementation Example
 from django.http import StreamingHttpResponse
 from django.shortcuts import render
 import asyncio
