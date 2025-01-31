@@ -80,7 +80,6 @@
         const sseData = document.getElementById('sse-data');
     
         function startSSE() {
-            sseData.innerHTML = 'Process Started.....' + '<br>';
             eventSource = new EventSource('/stream/');
         
             eventSource.onmessage = function(event) {
