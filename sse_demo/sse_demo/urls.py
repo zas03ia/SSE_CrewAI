@@ -16,11 +16,11 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
-from sse_app import views
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index, name='index'),  # Render initial page
-    path('sse/', views.sse_view),  # SSE view endpoint
+    path('', include('sse_app.urls')),
 ]
+
+

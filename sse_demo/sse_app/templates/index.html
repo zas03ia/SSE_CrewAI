@@ -3,28 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSE Demo</title>
+    <title>SSE</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        button {
+            background-color: #4CAF50;
+            color: #fff;
+            font-size: 16px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+        button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #sse-data {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            min-height: 100px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 14px;
+            color: #555;
+            border: 1px solid #ccc;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Server-Sent Events Demo</h1>
-    <div id="sse-events">
-        <!-- Events will be displayed here -->
+    <div class="container">
+        <h1>Server Sent Events</h1>
+        <button onclick="startSSE()">Start SSE</button>
+        <div id="sse-data"></div>
     </div>
 
     <script>
-        // Create a new EventSource to listen for SSE messages from the server
-        const eventSource = new EventSource('/sse/');
+        let eventSource;
+        const sseData = document.getElementById('sse-data');
+    
+        function startSSE() {
+            sseData.innerHTML = 'Process Started.....' + '<br>';
+            eventSource = new EventSource('/stream/');
         
-        // When a new message is received, update the DOM
-        eventSource.onmessage = function(event) {
-            const messageDiv = document.getElementById('sse-events');
-            messageDiv.innerHTML += `<p>${event.data}</p>`;
-        };
+            eventSource.onmessage = function(event) {
+                if (event.data !== "") {
+                    sseData.innerHTML = event.data + '<br>';
+                }
 
-        // Optionally handle errors (e.g., connection lost)
-        eventSource.onerror = function(event) {
-            console.error("Error with SSE connection", event);
-        };
+                // Check if the event data contains "Final Response:"
+                if (event.data.includes("Final Response:")) {
+                    eventSource.close();  // Close the EventSource connection
+                    sseData.innerHTML += "<span class='success'>Connection Closed</span>" + '<br>'; // Notify that the connection is closed
+                }
+            };
+
+            // Handle error case and close the connection
+            eventSource.onerror = function(event) {
+                sseData.innerHTML += "<span class='error'>Error occurred. Closing connection.</span>" + '<br>';
+                eventSource.close();
+            };
+
+            // Handle timeout and close the connection
+            eventSource.ontimeout = function() {
+                sseData.innerHTML += "<span class='error'>Connection timed out. Closing connection.</span>" + '<br>';
+                eventSource.close();
+            };
+
+            document.querySelector('button[onclick="startSSE()"]').disabled = true;
+        }
     </script>
 </body>
 </html>

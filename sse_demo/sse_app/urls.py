@@ -2,5 +2,6 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('sse/', views.sse_view),  # SSE view endpoint
+    path('', views.index, name='index'),
+    path('stream/', views.sse_stream, name='sse_stream'),
 ]
